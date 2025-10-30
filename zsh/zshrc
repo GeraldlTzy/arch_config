@@ -1,0 +1,120 @@
+#export CONFIG_PATH=$HOME/git/arch_config/
+
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it"ll load a random theme each
+# time that oh-my-zsh is loaded.
+ZSH_THEME="robbyrussell"
+
+# Plugins
+plugins=(git dotenv docker docker-compose kubectl)
+
+source $ZSH/oh-my-zsh.sh
+
+export PATH=$HOME/.local/bin:/snap/bin:$HOME/.local/share/mise/shims:$PATH
+
+# Editor used by CLI
+export EDITOR="nvim"
+export SUDO_EDITOR="$EDITOR"
+export ELECTRON_OZONE_PLATFORM_HINT="wayland"
+
+# Git Logs
+gitlog () {
+  if (( ! $# )); then
+    git log -15 --oneline --decorate --color --graph | cat
+  else
+    git log -$1 --oneline --decorate --color --graph | cat
+  fi
+}
+
+if command -v mise &> /dev/null; then
+  eval "$(mise activate zsh)"
+fi
+
+if command -v starship &> /dev/null; then
+ eval "$(starship init zsh)"
+fi
+
+# pnpm
+export PNPM_HOME=$HOME/.local/share/pnpm
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/luis/dev/google-cloud-sdk/path.zsh.inc' ]; then . '/home/luis/dev/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/luis/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/luis/dev/google-cloud-sdk/completion.zsh.inc'; fi
+
+# ALIAS
+
+## Rails
+alias be="bundle exec"
+alias bi="bundle install"
+alias rs="bundle exec rails s"
+alias rc="bundle exec rails c"
+alias prom="bundle exec prometheus_exporter"
+
+## Utility Aliases
+alias ~="cd ~"
+alias reload="source ~/.zshrc"
+alias day="hyprctl hyprsunset identity"
+alias night="hyprctl hyprsunset temperature 4500"
+
+# Zellij
+alias z="zellij"
+alias zveinte="z --layout ~/dev/config/dotfiles/zellij/layouts/veinte-rails-linux.kdl"
+alias zm="z --layout ~/dev/config/dotfiles/zellij/layouts/musa-rails-linux.kdl"
+
+# Git aliases
+alias commit="git commit -am"
+alias c="echo 'git commit -m' && git commit -m"
+alias s="echo 'git stash' && git stash"
+alias a="echo 'git add .' && git add ."
+
+# Yarn
+alias ys='yarn start'
+alias yi='yarn install'
+alias yt='yarn test'
+alias ytw='yarn test:watch'
+
+# pnpm
+alias pd='pnpm dev'
+alias pi='pnpm install'
+alias pt='pnpm tsc'
+alias pf='pnpm format'
+
+# Docker
+alias drm='docker rm'
+alias drmi='docker rmi'
+alias dps='docker ps'
+alias dpsa='docker ps -a --format "table {{.Image}}\\t{{.Status}}\\t{{.Command}}\\t{{.Ports}}"'
+alias di='docker images'
+alias dia='docker images -a'
+alias drmia='docker rmi $(docker images -aq -f "dangling=true")'
+alias drma='docker rm $(docker ps -a -q)'
+alias dsa='docker stop $(docker ps -a -q)'
+
+# Personal aliases
+alias dotfiles="cd ~/dev/config/dotfiles"
+alias dev="cd ~/dev"
+alias config="cd ~/dev/config"
+alias labs="cd ~/dev/labs"
+alias journal="cd ~/dev/personal/journal"
+alias blog="cd ~/dev/personal/mendoza.io"
+alias personal="cd ~/dev/personal"
+alias clientes="cd ~/dev/clientes"
+alias ve="cd ~/dev/veinte"
+alias musa="cd ~/dev/musa"
+
+# kubectl
+alias kveinte="kubectl config use-context do-nyc1-veinte-001"
+alias kbeekprod="kubectl config use-context gke_beek-production_us-west1-a_beek-production"
+alias kmusastaging="kubectl config use-context gke_musa-staging_us-west1_musa-staging"
+alias kmusaprod="kubectl config use-context gke_musa-production_us-west1_musa-production"
