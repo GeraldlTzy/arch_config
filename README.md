@@ -13,5 +13,5 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 ## Hyprland
 ```sh
-sudo pacman -S hyprland hyprlock hypridle hyprshot hyprsunset
+sudo pacman -S hyprland hyprlock hypridle hyprshot hyprsunset hyprpaper
 ```
